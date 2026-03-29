@@ -1,0 +1,40 @@
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
+
+@Entity({ tableName: 'service_requests' })
+export class ServiceRequest {
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
+  id!: string
+
+  @Property({ type: 'text' })
+  title!: string
+
+  @Property({ type: 'text', nullable: true })
+  description?: string | null
+
+  @Property({ type: 'text', default: 'new' })
+  status: 'new' | 'in_progress' | 'resolved' | 'closed' = 'new'
+
+  @Property({ type: 'text', default: 'normal' })
+  priority: 'low' | 'normal' | 'high' | 'critical' = 'normal'
+
+  @Property({ name: 'reporter_name', type: 'text', nullable: true })
+  reporterName?: string | null
+
+  @Property({ name: 'reporter_email', type: 'text', nullable: true })
+  reporterEmail?: string | null
+
+  @Property({ name: 'tenant_id', type: 'uuid', nullable: true })
+  tenantId?: string | null
+
+  @Property({ name: 'organization_id', type: 'uuid', nullable: true })
+  organizationId?: string | null
+
+  @Property({ name: 'created_at', type: Date, onCreate: () => new Date() })
+  createdAt: Date = new Date()
+
+  @Property({ name: 'updated_at', type: Date, onUpdate: () => new Date() })
+  updatedAt: Date = new Date()
+
+  @Property({ name: 'deleted_at', type: Date, nullable: true })
+  deletedAt?: Date | null
+}
